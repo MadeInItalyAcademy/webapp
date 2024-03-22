@@ -9,9 +9,9 @@ import {
 } from '@tremor/react';
 
 interface User {
-  id: number;
+  id: string;
   name: string;
-  username: string;
+  surname: string;
   email: string;
 }
 
@@ -30,7 +30,7 @@ export default function UsersTable({ users }: { users: User[] }) {
           <TableRow key={user.id}>
             <TableCell>{user.name}</TableCell>
             <TableCell>
-              <Text>{user.username}</Text>
+              <Text>{user.surname}</Text>
             </TableCell>
             <TableCell>
               <Text>{user.email}</Text>
