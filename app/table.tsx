@@ -8,12 +8,7 @@ import {
   Text
 } from '@tremor/react';
 
-interface User {
-  id: number;
-  name: string;
-  username: string;
-  email: string;
-}
+import { User } from '@/types/data';
 
 export default function UsersTable({ users }: { users: User[] }) {
   return (
