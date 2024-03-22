@@ -6,10 +6,11 @@ import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { signIn, signOut } from 'next-auth/react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const navigation = [
-  { name: 'Dashboard', href: '/' },
-  { name: 'Playground', href: '/playground' }
+  { name: 'Dashboard', href: '/', private: false },
+  { name: 'Playground', href: '/playground', private: true }
 ];
 
 function classNames(...classes: string[]) {
@@ -50,21 +51,26 @@ export default function Navbar({ user }: { user: any }) {
                   </svg>
                 </div>
                 <div className="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
-                  {navigation.map((item) => (
-                    <a
-                      key={item.name}
-                      href={item.href}
-                      className={classNames(
-                        pathname === item.href
-                          ? 'border-slate-500 text-gray-900'
-                          : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
-                        'inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium'
-                      )}
-                      aria-current={pathname === item.href ? 'page' : undefined}
-                    >
-                      {item.name}
-                    </a>
-                  ))}
+                  {navigation.map((item) => {
+                    if (item.private && !user) return null;
+                    return (
+                      <Link
+                        key={item.name}
+                        href={item.href}
+                        className={classNames(
+                          pathname === item.href
+                            ? 'border-slate-500 text-gray-900'
+                            : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
+                          'inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium'
+                        )}
+                        aria-current={
+                          pathname === item.href ? 'page' : undefined
+                        }
+                      >
+                        {item.name}
+                      </Link>
+                    );
+                  })}
                 </div>
               </div>
               <div className="hidden sm:ml-6 sm:flex sm:items-center">
@@ -113,7 +119,7 @@ export default function Navbar({ user }: { user: any }) {
                                 active ? 'bg-gray-100' : '',
                                 'flex w-full px-4 py-2 text-sm text-gray-700'
                               )}
-                              onClick={() => signIn('github')}
+                              onClick={() => signIn('google')}
                             >
                               Sign in
                             </button>
