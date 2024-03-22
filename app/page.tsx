@@ -3,13 +3,17 @@ import { Card, Title, Text } from '@tremor/react';
 import Search from './search';
 import UsersTable from './table';
 import { User } from '@/types/data';
+import prisma from '@/libs/prisma';
 
 export default async function IndexPage({
   searchParams
 }: {
   searchParams: { q: string };
 }) {
-  const users: User[] = [];
+  const users: User[] = await prisma.user.findMany({
+    where: { name: { contains: searchParams.q } }
+  });
+
   return (
     <main className="p-4 md:p-10 mx-auto max-w-7xl">
       <Title>Users</Title>
