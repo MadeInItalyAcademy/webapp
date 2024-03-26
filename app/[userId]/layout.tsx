@@ -8,6 +8,8 @@ export default async function AuthLayout({
 }: {
   children: React.ReactNode;
 }) {
+  // await prisma.user.deleteMany({});
+
   const session = await auth();
   if (!session?.user) return redirect('/');
 
@@ -16,7 +18,7 @@ export default async function AuthLayout({
       where: { email: session.user.email }
     });
 
-    if (!userExist) {
+    if (!userExist && session.user?.name) {
       await prisma.user.create({
         data: {
           name: session.user.name || '',
@@ -26,6 +28,7 @@ export default async function AuthLayout({
       });
     }
   }
+
 
   return <Suspense>{children}</Suspense>;
 }
